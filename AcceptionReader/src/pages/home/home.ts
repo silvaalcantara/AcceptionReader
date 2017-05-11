@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, LoadingController } from 'ionic-angular';
 import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
+import { InAppBrowser } from '@ionic-native/in-app-browser';
 
 
 @Component({
@@ -32,5 +33,10 @@ export class HomePage {
 	        loading.dismiss();
 	      });  
   	}
+
+	itemSelected (url: string):void {
+		let browser = new InAppBrowser();
+		browser.create(url, '_system');
+	}
 
 }
