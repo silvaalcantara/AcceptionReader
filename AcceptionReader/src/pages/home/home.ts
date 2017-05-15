@@ -22,7 +22,7 @@ export class HomePage {
 
     fetchContent ():void {
     	let loading = this.loadingCtrl.create({
-      		content: 'Fetching content...'
+      		content: 'Atualizando conteudo...'
     	});
 
     	loading.present();
@@ -30,13 +30,44 @@ export class HomePage {
 	    this.http.get(this.url).map(res => res.json())
 	      .subscribe(data => {
 	        this.feeds = data.data.children;
+
+			this.feeds.forEach((e, i, a) => {
+			   if (!e.data.thumbnail || e.data.thumbnail.indexOf('b.thumbs.redditmedia.com') === -1 ) { 
+			      e.data.thumbnail = 'http://www.redditstatic.com/icon.png';
+			   }
+			 })
+
 	        loading.dismiss();
 	      });  
-  	}
+  	}	
 
 	itemSelected (url: string):void {
 		let browser = new InAppBrowser();
 		browser.create(url, '_system');
 	}
+
+
+  doInfinite(infiniteScroll) {
+
+    let paramsUrl = (this.feeds.length > 0) ? this.feeds[this.feeds.length - 1].data.name : "";
+
+      this.http.get(this.olderPosts + paramsUrl).map(res => res.json())
+        .subscribe(data => {
+        
+          this.feeds = this.feeds.concat(data.data.children);
+          
+          this.feeds.forEach((e, i, a) => {
+            if (!e.data.thumbnail || e.data.thumbnail.indexOf('b.thumbs.redditmedia.com') === -1 ) {  
+              e.data.thumbnail = 'http://www.redditstatic.com/icon.png';
+            }
+          })
+          
+          infiniteScroll.complete();
+        }); 
+  }   
+
+  itemSelected (url: string):void {
+    let browser = new InAppBrowser(url, '_system');
+  }  
 
 }
