@@ -11,7 +11,7 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
 })
 export class HomePage {
 
-  public feeds: Array<string>;
+  public feeds: Array<any>;
   private url: string = "https://www.reddit.com/new.json"; 
 
   constructor(public navCtrl: NavController, public http: Http, public loadingCtrl: LoadingController) {
