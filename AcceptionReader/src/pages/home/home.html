@@ -5,6 +5,14 @@
 </ion-header>
 
 <ion-content >
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content
+	  pullingIcon="arrow-dropdown"
+	  pullingText="Pull to refresh"
+	  refreshingSpinner="circles"
+	  refreshingText="Buscando posts novos...">
+    </ion-refresher-content>
+  </ion-refresher>
   <ion-list>
      <button ion-item *ngFor="let feed of feeds" (click)="itemSelected(feed.data.url)">
 	    <ion-thumbnail item-left>
@@ -16,7 +24,7 @@
   </ion-list>
   <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
     <ion-infinite-scroll-content
-       loadingText="Atualizando conteudo...">
+       loadingText="Buscando posts antigos...">
     </ion-infinite-scroll-content>
   </ion-infinite-scroll> 
 </ion-content>
